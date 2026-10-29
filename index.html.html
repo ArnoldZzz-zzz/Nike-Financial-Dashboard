@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nike Financial Intelligence Dashboard</title>
+<style>
+:root{--bg:#0a0a0a;--c:#151515;--t:#f5f5f5;--m:#9b9b9b;--l:#2b2b2b;--a:#d7ff00;--oa:#000;--b:#fa5400;--g:#39e07f;--r:#ff5252;box-sizing:border-box;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:light){:root:not([data-theme=dark]){--bg:#f2f2f0;--c:#fff;--t:#111;--m:#666;--l:#ddd;--a:#111;--oa:#fff;--b:#e84c00;--g:#0a8f4a;--r:#d62828}}
+:root[data-theme=light]{--bg:#f2f2f0;--c:#fff;--t:#111;--m:#666;--l:#ddd;--a:#111;--oa:#fff;--b:#e84c00;--g:#0a8f4a;--r:#d62828}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 52px);scroll-behavior:smooth}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:15px/1.5 "Helvetica Neue",Arial,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+h1,h2,h3,.big{font-family:"Helvetica Neue Condensed Bold","Arial Narrow",Impact,Arial,sans-serif;text-transform:uppercase;font-weight:900;letter-spacing:-.01em;margin:0}
+h1{font-size:clamp(2.6rem,10vw,5.2rem);line-height:.95;margin:6px 0 10px}h2{font-size:1.9rem;margin:0 0 16px;padding-left:12px;border-left:6px solid var(--a)}h3{font-size:1.1rem;margin:0 0 10px}
+.eb{font-size:.72rem;letter-spacing:.16em;color:var(--m);font-weight:700}
+header,.hero,main{max-width:1180px;margin:0 auto;padding:14px 16px}
+header{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+button,select{font:inherit;font-size:.82rem;font-weight:700;color:var(--t);background:var(--c);border:1px solid var(--l);border-radius:99px;padding:7px 14px;cursor:pointer}
+button:hover{border-color:var(--a)}select{border-radius:8px}
+.hero p{color:var(--m);max-width:640px}.ctl{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0;font-size:.85rem;color:var(--m)}.ctl label{display:flex;gap:8px;align-items:center}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--bg);border-block:1px solid var(--l);display:flex;gap:6px;overflow-x:auto;padding:8px 16px}
+nav a{color:var(--m);text-decoration:none;font-size:.8rem;font-weight:700;padding:5px 12px;border-radius:99px;white-space:nowrap;text-transform:uppercase}nav a:hover{background:var(--a);color:var(--oa)}
+section{margin:36px 0}.g4,.g3,.g2{display:grid;gap:14px}.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.card{background:var(--c);border:1px solid var(--l);border-radius:14px;padding:16px}.card p{margin:0;color:var(--m);font-size:.88rem}
+.kpi .big{font-size:2.6rem;line-height:1;color:var(--a)}.kpi small{display:block;color:var(--m);margin-top:6px}.kpi.hi{background:var(--a);border-color:var(--a)}.kpi.hi .big,.kpi.hi small,.kpi.hi .eb{color:var(--oa)}
+.cv{position:relative;height:260px}.note{color:var(--m);font-size:.8rem;margin-top:10px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--l);white-space:nowrap}th{color:var(--m);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em}
+input[type=range]{width:100%;accent-color:var(--a)}.sl b{color:var(--a)}.sl{margin-bottom:12px;font-size:.88rem}
+.bar{height:6px;background:var(--l);border-radius:9px;margin-top:8px}.bar i{display:block;height:100%;background:var(--a);border-radius:9px}
+.al{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--l);font-size:.88rem}.al:before{content:"";flex:none;width:10px;height:10px;border-radius:50%;margin-top:6px;background:var(--m)}.al.warn:before{background:var(--b)}.al.bad:before{background:var(--r)}.al.ok:before{background:var(--g)}
+.pos{color:var(--g)}.neg{color:var(--r)}ul{margin:0;padding-left:18px;color:var(--m);font-size:.88rem}
+.tg{display:inline-block;font-size:.68rem;font-weight:800;text-transform:uppercase;background:var(--l);padding:2px 8px;border-radius:99px;margin-bottom:6px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--a);color:var(--oa);font-weight:800;padding:9px 18px;border-radius:99px;z-index:20;opacity:0;transition:.3s;pointer-events:none}.toast.on{opacity:1}
+footer{color:var(--m);font-size:.8rem;border-top:1px solid var(--l);padding-top:14px}a{color:var(--a)}
+@media print{header button,nav{display:none}:root{--bg:#fff;--c:#fff;--t:#000;--m:#444;--l:#ccc}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head><body>
+<div class="toast" id="ts"></div>
+<header><div class="eb">NIKE FINANCIAL INTELLIGENCE · INDIA VIEW</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button id="sn">🔊 Sound on</button><button id="th">☀ Light mode</button><button id="ex">Export CSV</button><button onclick="window.print()">Print / PDF</button></div></header>
+<div class="hero"><div class="eb">EXECUTIVE FINANCIAL ANALYSIS</div><h1>Nike Financial Dashboard</h1>
+<p>Five-year financial performance, profit analysis, scenario forecasting, product portfolio, financial health and India-market intelligence.</p>
+<div class="ctl"><label>Show years from: <select id="yf"></select></label><label>Currency: <select id="cu"><option value="INR">INR ₹</option><option value="USD">USD $</option></select></label></div></div>
+<nav><a href="#overview">Overview</a><a href="#trends">Trends</a><a href="#forecast">Forecast</a><a href="#health">Financial health</a><a href="#segments">Segments</a><a href="#india">India market</a><a href="#products">Products</a><a href="#competitors">Competitors</a><a href="#insights">Insights</a></nav>
+<main>
+<section id="overview"><h2>Executive overview · FY2026</h2><div class="g4" id="kpi"></div></section>
+
+<section id="trends"><h2>Financial performance analytics</h2>
+<div class="ctl"><label>Trend metric: <select id="mt"><option value="all">Revenue and profits</option><option value="r">Revenue only</option><option value="p">Profits only</option></select></label></div>
+<div class="g2">
+<div class="card"><h3>Revenue and profit trends</h3><div class="cv"><canvas id="c1"></canvas></div></div>
+<div class="card"><h3>Profit margins</h3><div class="cv"><canvas id="c2"></canvas></div></div>
+<div class="card"><h3>Year-on-year revenue growth</h3><div class="cv"><canvas id="c3"></canvas></div></div>
+<div class="card"><h3>Operating vs net income</h3><div class="cv"><canvas id="c4"></canvas></div></div></div>
+<div class="card" style="margin-top:14px"><h3>Financial statement summary</h3><div class="tw"><table id="tb"></table></div></div></section>
+
+<section id="forecast"><h2>Forecast and scenario simulator</h2>
+<p class="note" style="margin:-6px 0 14px">Adjust assumptions to estimate a hypothetical next year. This is a scenario tool, not company guidance.</p>
+<div class="g2"><div class="card">
+<div class="sl">Revenue growth <b id="gv"></b><input id="gr" type="range" min="-10" max="20" step=".5" value="3"></div>
+<div class="sl">Operating margin <b id="mv"></b><input id="om" type="range" min="5" max="20" step=".5" value="9"></div>
+<div class="sl">USD to INR rate <b id="fv"></b><input id="fx" type="range" min="60" max="120" step=".1" value="88"></div></div>
+<div class="g3" id="sim" style="grid-template-columns:1fr"></div></div></section>
+
+<section id="health"><h2>Financial health scorecard</h2><div class="g2">
+<div class="card"><h3>Profitability indicators</h3><div class="g2" id="sc" style="grid-template-columns:1fr 1fr"></div><p class="note">Liquidity, debt and cash-flow ratios require complete balance sheet and cash flow data.</p></div>
+<div class="card"><h3>Risk monitoring alerts</h3><div id="al"></div></div></div></section>
+
+<section id="segments"><h2>Global business segment analysis</h2><div class="g3">
+<div class="card"><span class="tg">Channel</span><h3>NIKE Direct</h3><p>Nike-owned stores, digital and app. Monitor traffic, full-price sell-through, digital mix and promotional intensity.</p></div>
+<div class="card"><span class="tg">Channel</span><h3>Wholesale</h3><p>Partners such as sporting-goods chains, marketplaces and distributors. Monitor order books, partner inventory and account mix.</p></div>
+<div class="card"><span class="tg">Brand</span><h3>Converse</h3><p>Lifestyle footwear and apparel. Monitor wholesale and direct trends, licensing and brand heat.</p></div></div>
+<p class="note">These are business descriptions, not reported segment financial figures. Add 10-K segment and geography data (North America, EMEA, Greater China, APLA) for precise comparisons.</p></section>
+
+<section id="india"><h2>India market intelligence</h2><h3>Opportunity areas</h3><div class="g3" style="margin-bottom:14px">
+<div class="card"><h3>Premiumisation</h3><p>Track premium running, lifestyle and Jordan mix, and flagship upgrades.</p></div>
+<div class="card"><h3>Festive and online sales</h3><p>Monitor Diwali and end-of-season promotions, marketplaces and the Nike app.</p></div>
+<div class="card"><h3>Sourcing and tariffs</h3><p>Evaluate sourcing mix, import duties and supply-chain resilience for India.</p></div></div>
+<div class="card"><h3>India-specific data checklist</h3><ul><li>India revenue and fiscal period</li><li>Athletic footwear market share by quarter</li><li>Apparel and sportswear market share</li><li>Retail store count and franchise data</li><li>Import duty and pricing changes</li><li>Current Indian product prices</li></ul>
+<p class="note">Use cited sources and reporting dates. Global financials converted to INR are not India-only results.</p></div></section>
+
+<section id="products"><h2>Nike product explorer</h2>
+<div class="ctl"><label>Select category: <select id="ct"><option>All products</option><option>Footwear</option><option>Apparel</option><option>Equipment</option></select></label></div>
+<div class="g3" id="pr"></div>
+<p class="note">Indicative price ranges only. Prices vary by model, size, offer and retailer. Check nike.com/in for current prices.</p></section>
+
+<section id="competitors"><h2>Competitor comparison</h2><div class="card tw"><table>
+<tr><th>Company</th><th>Comparison area</th><th>Key analytical focus</th><th>Suggested KPI</th></tr>
+<tr><td>Nike</td><td>Global athletic footwear and apparel</td><td>Brand heat, direct mix, gross margin</td><td>Gross margin, revenue growth</td></tr>
+<tr><td>Adidas</td><td>Footwear, apparel and lifestyle</td><td>Terrace and running momentum</td><td>Operating margin, growth</td></tr>
+<tr><td>Puma</td><td>Performance and sport-lifestyle</td><td>Pricing, distribution reset</td><td>Gross margin, inventory days</td></tr>
+<tr><td>Under Armour</td><td>Performance apparel</td><td>Restructuring and North America</td><td>Operating margin, cash flow</td></tr>
+<tr><td>Lululemon</td><td>Premium athleisure</td><td>Full-price demand, international growth</td><td>Operating margin, comp sales</td></tr></table></div>
+<p class="note">Use matching fiscal years and accounting definitions for fair comparisons. No live competitor prices or market shares are fabricated here.</p></section>
+
+<section id="insights"><h2>Financial insights and strategic recommendations</h2><div class="card" style="margin-bottom:14px"><h3>Analyst summary</h3><p id="sm" style="color:var(--t)"></p><p class="note">This is rule-based commentary, not a connected AI service or investment advice.</p></div>
+<h3>Recommended strategic actions</h3><div class="g3">
+<div class="card"><h3>1. Protect profitability</h3><p>Track gross margin, promotional depth, tariff costs and product mix.</p></div>
+<div class="card"><h3>2. Balance inventory and cash</h3><p>Compare inventory and receivables with sell-through, buybacks and dividends.</p></div>
+<div class="card"><h3>3. Localise India decisions</h3><p>Keep India sales, market share and pricing separate from global results.</p></div></div></section>
+
+<footer><b>Sources and methodology</b><br>Nike, Inc. fiscal years end 31 May; FY2022–FY2026 figures in USD millions from Nike annual and Q4 FY2026 results, rounded. Operating profit is EBIT-style (before interest and other income) and may differ slightly by data provider. INR values use an adjustable USD/INR rate (default ₹88); historical rates are not applied. Net income is consolidated.<br>
+<a href="https://investors.nike.com">Nike Investor Relations</a> · <a href="https://www.sec.gov/Archives/edgar/data/0000320187/000032018726000076/q4fy26exhibit991er.htm">Q4 FY2026 results</a> · <a href="https://www.nike.com/in">Nike India</a><br>Product price ranges are illustrative. This dashboard is for education and analysis, not investment advice. Not affiliated with Nike, Inc.</footer>
+</main>
+<script>
+const $=s=>document.querySelector(s),root=document.documentElement;
+const D=[{y:2022,r:46710,o:6675,n:6046},{y:2023,r:51217,o:5915,n:5070},{y:2024,r:51362,o:6754,n:5700},{y:2025,r:46309,o:3702,n:3219},{y:2026,r:46398,o:3797,n:3108}];
+D.forEach((d,i)=>{d.g=(d.r/(i?D[i-1].r:44538)-1)*100;d.om=d.o/d.r*100;d.nm=d.n/d.r*100});
+const L=D[4],Q=D[3],S={f:2022,cu:'INR',m:'all',snd:1},ch={};
+const P=[['Pegasus road running shoes','Footwear',9500,13000],['Air Force 1 ’07','Footwear',9000,10500],['Air Max 270','Footwear',12000,15500],['Air Jordan 1 High','Footwear',11500,18000],['Revolution running shoes','Footwear',3500,4800],['Dri-FIT running tee','Apparel',1800,3200],['Club Fleece hoodie','Apparel',4500,6500],['Tech Fleece hoodie','Apparel',9500,12000],['Training shorts','Apparel',2000,3500],['Brasilia duffel bag','Equipment',2800,4800],['Academy football','Equipment',1800,3200],['Dri-FIT cap','Equipment',1200,2300]];
+const fx=()=>+$('#fx').value,K=()=>S.cu=='INR'?fx():1,sy=()=>S.cu=='INR'?'₹':'$',B=v=>v*K()/1e3;
+const M=v=>{const x=B(v);return sy()+(x>=1e3?(x/1e3).toFixed(2)+'T':x.toFixed(1)+'B')};
+const pc=(v,s)=>(s&&v>0?'+':'')+v.toFixed(1)+'%',cl=v=>v>=0?'pos':'neg';
+const th=()=>root.dataset.theme||(matchMedia('(prefers-color-scheme:light)').matches?'light':'dark');
+function toast(t){const e=$('#ts');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),1800)}
+let ac;function beep(){try{ac=ac||new AudioContext();const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=880;g.gain.value=.04;o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+.05)}catch(e){}}
+function cc(){const s=getComputedStyle(root),v=n=>s.getPropertyValue(n).trim();return{a:v('--a'),b:v('--b'),m:v('--m'),l:v('--l'),t:v('--t')}}
+function mk(id,type,lb,ds,sc){if(!window.Chart)return;ch[id]&&ch[id].destroy();const c=cc();ch[id]=new Chart($('#'+id),{type,data:{labels:lb,datasets:ds},options:{responsive:true,maintainAspectRatio:false,scales:Object.assign({x:{ticks:{color:c.m},grid:{color:c.l}},y:{ticks:{color:c.m},grid:{color:c.l}}},sc),plugins:{legend:{labels:{color:c.t}}}}})}
+function render(){
+const r=D.filter(d=>d.y>=S.f),lb=r.map(d=>'FY'+d.y),c=cc(),u=sy(),m=S.m;
+$('#kpi').innerHTML=[['Revenue',M(L.r),'FY2026 vs FY2025',1],['Operating profit',M(L.o)],['Net income · consolidated',M(L.n)],['Revenue growth YoY',pc(L.g,1),'FY2026 vs FY2025']].map((k,i)=>`<div class="card kpi ${k[3]?'hi':''}"><div class="eb">${k[0].toUpperCase()}</div><div class="big">${k[1]}</div><small>${k[2]||''}</small></div>`).join('');
+const ln=(l,k,col,ax)=>({type:'line',label:l+' ('+u+'B)',data:r.map(d=>B(d[k])),borderColor:col,backgroundColor:col,yAxisID:ax,tension:.3});
+const ax=m=='p'?'y':'y1',ds=[];if(m!='p')ds.push({label:'Revenue ('+u+'B)',data:r.map(d=>B(d.r)),backgroundColor:c.a,yAxisID:'y'});if(m!='r'){ds.push(ln('Operating profit','o',c.b,ax),ln('Net income','n',c.t,ax))}
+mk('c1','bar',lb,ds,m=='all'?{y1:{position:'right',ticks:{color:c.m},grid:{drawOnChartArea:false}}}:{});
+mk('c2','line',lb,[{label:'Operating margin %',data:r.map(d=>d.om),borderColor:c.a,backgroundColor:c.a,tension:.3},{label:'Net margin %',data:r.map(d=>d.nm),borderColor:c.b,backgroundColor:c.b,tension:.3}],{});
+mk('c3','bar',lb,[{label:'Revenue growth %',data:r.map(d=>d.g),backgroundColor:r.map(d=>d.g>=0?c.a:c.b)}],{});
+mk('c4','bar',lb,[{label:'Operating profit ('+u+'B)',data:r.map(d=>B(d.o)),backgroundColor:c.a},{label:'Net income ('+u+'B)',data:r.map(d=>B(d.n)),backgroundColor:c.b}],{});
+$('#tb').innerHTML='<tr><th>Year</th><th>Revenue</th><th>Growth</th><th>Operating profit</th><th>Operating margin</th><th>Net income</th><th>Net margin</th></tr>'+r.map(d=>`<tr><td>FY${d.y}</td><td>${M(d.r)}</td><td class="${cl(d.g)}">${pc(d.g,1)}</td><td>${M(d.o)}</td><td>${pc(d.om)}</td><td>${M(d.n)}</td><td>${pc(d.nm)}</td></tr>`).join('');
+const g=+$('#gr').value,o=+$('#om').value,rv=L.r*(1+g/100),op=rv*o/100;
+$('#gv').textContent=pc(g);$('#mv').textContent=pc(o);$('#fv').textContent='₹'+fx().toFixed(1);
+$('#sim').innerHTML=[['Projected revenue',M(rv)],['Projected operating profit',M(op)],['Operating profit change',`<span class="${cl(op-L.o)}">${pc((op/L.o-1)*100,1)}</span>`]].map(x=>`<div class="card kpi"><div class="eb">${x[0].toUpperCase()}</div><div class="big">${x[1]}</div></div>`).join('');
+const bo=Math.max(...D.map(d=>d.om)),bn=Math.max(...D.map(d=>d.nm)),ao=D.reduce((s,d)=>s+d.om,0)/5,py=D.find(d=>d.om==bo).y;
+$('#sc').innerHTML=[['Operating margin',pc(L.om),L.om/bo*100,'5-yr best '+pc(bo)],['Net margin',pc(L.nm),L.nm/bn*100,'5-yr best '+pc(bn)],['Operating profit vs FY25',pc((L.o/Q.o-1)*100,1),0,M(Q.o)+' → '+M(L.o)],['Net income vs FY25',pc((L.n/Q.n-1)*100,1),0,M(Q.n)+' → '+M(L.n)]].map(x=>`<div><div class="eb">${x[0].toUpperCase()}</div><div class="big" style="font-size:1.8rem">${x[1]}</div>${x[2]?`<div class="bar"><i style="width:${x[2]}%"></i></div>`:''}<small class="note">${x[3]}</small></div>`).join('');
+const al=[];if(L.om<ao)al.push(['warn',`Operating margin of ${pc(L.om)} is below the five-year average of ${pc(ao)}.`]);if(L.g<2)al.push(['warn',`Revenue growth of ${pc(L.g,1)} is essentially flat; demand recovery is not yet visible in sales.`]);if(L.n<Q.n)al.push(['bad',`Net income fell ${pc(Math.abs(L.n/Q.n-1)*100)} versus FY2025.`]);if(L.o>Q.o)al.push(['ok',`Operating profit rose ${pc((L.o/Q.o-1)*100,1)} versus FY2025, an early sign of stabilisation.`]);al.push(['warn','Q4 FY2026 gross margin included roughly 900 bp from an expected IEEPA tariff recovery; treat it as non-recurring.']);
+$('#al').innerHTML=al.map(a=>`<div class="al ${a[0]}">${a[1]}</div>`).join('');
+$('#sm').textContent=`Revenue was ${M(L.r)} in FY2026 (${pc(L.g,1)}), after ${pc(Q.g,1)} in FY2025. Operating margin is ${pc(L.om)} against a ${pc(bo)} peak in FY${py}, so margin recovery rather than top-line growth is the main item to watch. Net income was ${M(L.n)} (${pc((L.n/Q.n-1)*100,1)} versus FY2025).`;
+pr()}
+function pr(){const c=$('#ct').value;$('#pr').innerHTML=P.filter(p=>c[0]=='A'&&c[1]=='l'||p[1]==c).map(p=>`<div class="card"><span class="tg">${p[1]}</span><h3>${p[0]}</h3><div class="big" style="font-size:1.4rem;color:var(--a)">₹${p[2].toLocaleString('en-IN')} – ₹${p[3].toLocaleString('en-IN')}</div></div>`).join('')}
+$('#yf').innerHTML=D.map((d,i)=>`<option value="${d.y}">${i==4?d.y+' only':d.y+' onward'}</option>`).join('');
+$('#yf').onchange=e=>{S.f=+e.target.value;render()};$('#cu').onchange=e=>{S.cu=e.target.value;render()};$('#mt').onchange=e=>{S.m=e.target.value;render()};$('#ct').onchange=pr;
+['gr','om','fx'].forEach(i=>$('#'+i).oninput=render);
+function lab(){$('#th').textContent=th()=='light'?'🌙 Dark mode':'☀ Light mode'}
+$('#th').onclick=()=>{root.dataset.theme=th()=='light'?'dark':'light';lab();render()};
+$('#sn').onclick=()=>{S.snd=!S.snd;$('#sn').textContent=S.snd?'🔊 Sound on':'🔇 Sound off'};
+$('#ex').onclick=()=>{const s=['Year,Revenue ('+S.cu+' B),Operating profit,Net income,Growth %,Operating margin %,Net margin %',...D.filter(d=>d.y>=S.f).map(d=>[`FY${d.y}`,B(d.r).toFixed(2),B(d.o).toFixed(2),B(d.n).toFixed(2),d.g.toFixed(1),d.om.toFixed(1),d.nm.toFixed(1)].join(','))].join('\n');try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([s],{type:'text/csv'}));a.download='nike-financials.csv';a.click()}catch(e){}try{navigator.clipboard.writeText(s)}catch(e){}toast('CSV exported / copied')};
+document.addEventListener('click',e=>{if(S.snd&&e.target.closest('button,a'))beep()});
+lab();window.addEventListener('load',render);render();
+</script></body></html>
